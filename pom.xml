@@ -9,14 +9,14 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
     
-    <project>
+    
 		<developers>
 			<developer>
 				<name>Pablo Guimarães</name>
 				<email>guimaraes.pablo@eb.mil.br</email>
 			</developer>
 		</developers>
-   </project>
+   
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
