@@ -74,7 +74,8 @@ public class SessaoController {
     	Sala sala            = salaDao.findOne(id);
         List<Sessao> sessaos = sessaoDao.buscaSessoesDaSala(sala);
 
-        ModelAndView view = new ModelAndView("admin/lista");
+        ModelAndView view = new ModelAndView("sessao/lista");
+        view.addObject("sala",sala);
         view.addObject("sessoes",sessaos);
 
         return view;
