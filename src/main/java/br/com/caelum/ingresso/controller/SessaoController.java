@@ -2,16 +2,22 @@ package br.com.caelum.ingresso.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.caelum.ingresso.dao.FilmeDao;
 import br.com.caelum.ingresso.dao.SalaDao;
+import br.com.caelum.ingresso.dao.SessaoDao;
 import br.com.caelum.ingresso.model.Filme;
 import br.com.caelum.ingresso.model.Sala;
+import br.com.caelum.ingresso.model.Sessao;
+import br.com.caelum.ingresso.model.form.SessaoForm;
 
 @Controller
 public class SessaoController {
@@ -21,6 +27,9 @@ public class SessaoController {
 	
 	@Autowired
 	SalaDao salaDao;
+	
+	@Autowired
+	SessaoDao sessaoDao;
 	
 	@GetMapping("/admin/sessao")
 	public ModelAndView form(@RequestParam("salaId") Integer salaId){		
@@ -35,14 +44,22 @@ public class SessaoController {
 			//Entregando para a camada de visão renderizar
 			modelView.addObject("sala",sala);
 			modelView.addObject("filmes", filmes);
-			//===fim===
-			
+			//===fim===			
 			return modelView;
 			
 		}catch (Exception e) {
 			e.printStackTrace();						
 		}		
 		return null;		
+	}
+	
+	@PostMapping("/admin/sessao")
+	public ModelAndView save(@Valid SessaoForm form) {
+		
+		Sessao sessao = form.toSessao(salaDao, filmeDao);
+		sessaoDao.save(sessao);
+		
+		return new ModelAndView("redirect:/admin/sala/" + form.getSalaId() + "/sessoes");		
 	}
 	
 	
