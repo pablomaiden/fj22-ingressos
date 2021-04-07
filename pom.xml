@@ -8,7 +8,15 @@
     <artifactId>ingresso</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-
+    
+    
+		<developers>
+			<developer>
+				<name>Pablo Guimarães</name>
+				<email>guimaraes.pablo@eb.mil.br</email>
+			</developer>
+		</developers>
+   
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
