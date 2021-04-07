@@ -35,7 +35,7 @@ public class SessaoController {
 	SessaoDao sessaoDao;
 
 	@GetMapping("/admin/sessao")
-	public ModelAndView form(@RequestParam("salaId") Integer salaId) {
+	public ModelAndView form(@RequestParam("salaId") Integer salaId, SessaoForm form) {
 		try {
 			ModelAndView modelView = new ModelAndView("sessao/sessao");
 
@@ -59,9 +59,9 @@ public class SessaoController {
 	@PostMapping("/admin/sessao")
 	@Transactional
 	public ModelAndView save(@Valid SessaoForm form, BindingResult result) {
-
-		// if (result.hasErrors())
-		// return form(form.getSalaId(),form);
+		
+		if (result.hasErrors())
+		    return form(form.getSalaId(),form);
 
 		Sessao sessao = form.toSessao(salaDao, filmeDao);
 		sessaoDao.save(sessao);
