@@ -6,7 +6,10 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,48 +24,55 @@ import br.com.caelum.ingresso.model.form.SessaoForm;
 
 @Controller
 public class SessaoController {
-	
+
 	@Autowired
 	FilmeDao filmeDao;
-	
+
 	@Autowired
 	SalaDao salaDao;
-	
+
 	@Autowired
 	SessaoDao sessaoDao;
-	
+
 	@GetMapping("/admin/sessao")
-	public ModelAndView form(@RequestParam("salaId") Integer salaId){		
-		try {			
+	public ModelAndView form(@RequestParam("salaId") Integer salaId) {
+		try {
 			ModelAndView modelView = new ModelAndView("sessao/sessao");
-			
-			//Acessando a camada de dados
-			Sala sala          = salaDao.findOne(salaId);
+
+			// Acessando a camada de dados
+			Sala sala = salaDao.findOne(salaId);
 			List<Filme> filmes = filmeDao.findAll();
-			//===fim===
-			
-			//Entregando para a camada de visão renderizar
-			modelView.addObject("sala",sala);
+			// ===fim===
+
+			// Entregando para a camada de visão renderizar
+			modelView.addObject("sala", sala);
 			modelView.addObject("filmes", filmes);
-			//===fim===			
+			// ===fim===
 			return modelView;
-			
-		}catch (Exception e) {
-			e.printStackTrace();						
-		}		
-		return null;		
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
-	
+
 	@PostMapping("/admin/sessao")
-	public ModelAndView save(@Valid SessaoForm form) {
-		
+	@Transactional
+	public ModelAndView save(@Valid SessaoForm form, BindingResult result) {
+
+		// if (result.hasErrors())
+		// return form(form.getSalaId(),form);
+
 		Sessao sessao = form.toSessao(salaDao, filmeDao);
 		sessaoDao.save(sessao);
-		
-		return new ModelAndView("redirect:/admin/sala/" + form.getSalaId() + "/sessoes");		
+		return new ModelAndView("redirect:/admin/sala/" + form.getSalaId() + "/sessoes");
 	}
-	
-	
-	
+
+	@GetMapping("/admin/sala/{id}/sessoes")
+	public ModelAndView listaSessoes(@PathVariable("id") Integer id) {
+		ModelAndView view = new ModelAndView("sessao/sessao");
+		Sala sala = salaDao.findOne(id);
+		return view.addObject("sessoes", sessaoDao.buscaSessoesDaSala(sala));
+	}
 
 }
