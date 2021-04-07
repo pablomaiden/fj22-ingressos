@@ -85,7 +85,8 @@ public class SessaoController {
 	@DeleteMapping("/admin/sessao/{id}")
 	@Transactional
 	public void delete(@PathVariable("id") Integer id){			
-		sessaoDao.delete(id);		 		
+		sessaoDao.delete(id);
+		//testes
 	}
 
 }
