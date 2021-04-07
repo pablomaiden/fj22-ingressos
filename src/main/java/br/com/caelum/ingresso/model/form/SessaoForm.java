@@ -26,7 +26,7 @@ public class SessaoForm {
 		Filme filme = filmeDao.findOne(filmeId);
 		Sala sala = salaDao.findOne(salaId);
 		Sessao sessao = new Sessao(horario, filme, sala);
-		return sessao;
+		return sessao;	
 	}
 	
 	public Integer getSalaId() {
