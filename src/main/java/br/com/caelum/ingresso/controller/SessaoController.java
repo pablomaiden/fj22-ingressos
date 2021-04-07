@@ -67,12 +67,17 @@ public class SessaoController {
 		sessaoDao.save(sessao);
 		return new ModelAndView("redirect:/admin/sala/" + form.getSalaId() + "/sessoes");
 	}
-
+	
 	@GetMapping("/admin/sala/{id}/sessoes")
-	public ModelAndView listaSessoes(@PathVariable("id") Integer id) {
-		ModelAndView view = new ModelAndView("sessao/sessao");
-		Sala sala = salaDao.findOne(id);
-		return view.addObject("sessoes", sessaoDao.buscaSessoesDaSala(sala));
-	}
+    public ModelAndView listaSessoes(@PathVariable("id") Integer id) {
+
+    	Sala sala            = salaDao.findOne(id);
+        List<Sessao> sessaos = sessaoDao.buscaSessoesDaSala(sala);
+
+        ModelAndView view = new ModelAndView("admin/lista");
+        view.addObject("sessoes",sessaos);
+
+        return view;
+    }
 
 }

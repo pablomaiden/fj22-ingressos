@@ -1,6 +1,5 @@
 package br.com.caelum.ingresso.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -17,9 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.caelum.ingresso.dao.SalaDao;
-import br.com.caelum.ingresso.dao.SessaoDao;
 import br.com.caelum.ingresso.model.Sala;
-import br.com.caelum.ingresso.model.Sessao;
 import br.com.caelum.ingresso.model.form.SalaForm;
 
 /**
@@ -31,9 +28,6 @@ public class SalaController {
     @Autowired
     private SalaDao salaDao;
     
-    private SessaoDao sessaoDao;
-
-
     @GetMapping({"/admin/sala", "/admin/sala/{id}"})
     public ModelAndView form(@PathVariable("id") Optional<Integer> id, SalaForm salaForm) {
         ModelAndView modelAndView = new ModelAndView("sala/sala");
@@ -66,20 +60,7 @@ public class SalaController {
         modelAndView.addObject("salas", salaDao.findAll());
 
         return modelAndView;
-    }
-
-
-    @GetMapping("/admin/sala/{id}/sessoes")
-    public ModelAndView listaSessoes(@PathVariable("id") Integer id) {
-
-    	Sala sala            = salaDao.findOne(id);
-        List<Sessao> sessaos = sessaoDao.buscaSessoesDaSala(sala);
-
-        ModelAndView view = new ModelAndView("sala/sessoes");
-        view.addObject("sessoes",sessaos);
-
-        return view;
-    }
+    }    
 
     @GetMapping("/admin/sala/{id}/lugares/")
     public ModelAndView listaLugares(@PathVariable("id") Integer id) {
