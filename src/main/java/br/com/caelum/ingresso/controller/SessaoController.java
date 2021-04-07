@@ -83,21 +83,9 @@ public class SessaoController {
     }
 	
 	@DeleteMapping("/admin/sessao")
-	public ModelAndView delete(@PathVariable("id") Integer id){
-		
-		Sessao sessao = sessaoDao.findOne(id);		
-		sessaoDao.delete(sessao);		
-		
-		 ModelAndView view = new ModelAndView("sessao/lista");	
-		 
-		 Sala sala = salaDao.findOne(id);
-		 List<Sessao> sessaos = sessaoDao.buscaSessoesDaSala(sala);
-		 
-		 view.addObject("sala",sala);
-		 view.addObject("sessoes",sessaos);
-		 
-		 
-		 return view;		
+	@Transactional
+	public void delete(@PathVariable("id") Integer id){			
+		sessaoDao.delete(id);		 		
 	}
 
 }

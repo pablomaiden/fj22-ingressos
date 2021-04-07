@@ -24,8 +24,8 @@ public class SessaoDao {
 		manager.persist(sessao);
 	}
 	
-	public void delete(Sessao sessao) {
-		manager.remove(sessao);
+	public void delete(Integer id) {
+		manager.remove(findOne(id));
 	}
 	
 	public List<Sessao> buscaSessoesDaSala(Sala sala) {
