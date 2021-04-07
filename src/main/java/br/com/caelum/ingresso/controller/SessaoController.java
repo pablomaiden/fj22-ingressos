@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -80,5 +81,23 @@ public class SessaoController {
 
         return view;
     }
+	
+	@DeleteMapping("/admin/sessao")
+	public ModelAndView delete(@PathVariable("id") Integer id){
+		
+		Sessao sessao = sessaoDao.findOne(id);		
+		sessaoDao.delete(sessao);		
+		
+		 ModelAndView view = new ModelAndView("sessao/lista");	
+		 
+		 Sala sala = salaDao.findOne(id);
+		 List<Sessao> sessaos = sessaoDao.buscaSessoesDaSala(sala);
+		 
+		 view.addObject("sala",sala);
+		 view.addObject("sessoes",sessaos);
+		 
+		 
+		 return view;		
+	}
 
 }
